@@ -23,7 +23,7 @@ const reactionSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now(),
-            // get: createdAtDate => moment(createdAtDate).format('MMM DD, YYYY [at] hh:mm a')
+            get: value => value.toDateString(),
         },
     },
     {
@@ -45,7 +45,7 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now(),
-            // get: createdAtDate => moment(createdAtDate).format('MMM DD, YYYY [at] hh:mm a')
+            get: value => value.toDateString(),
         },
         username: {
             type: String,
