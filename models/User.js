@@ -15,7 +15,14 @@ const userSchema = new Schema(
             unique: true,
             match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/],
         },
-        thoughts: [thoughtSchema],
+        // thoughts: [thoughtSchema],
+        thoughts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'thought',
+            },
+
+        ],
         friends: [
             {
                 type: Schema.Types.ObjectId,
@@ -35,5 +42,6 @@ userSchema.virtual('friendCount').get(function () {
     return this.friends.length;
 });
 
+const Thought = model('thought', thoughtSchema);
 const User = model('user', userSchema);
 module.exports = { User }; 
