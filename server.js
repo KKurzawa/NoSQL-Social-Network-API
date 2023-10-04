@@ -26,10 +26,6 @@ app.use(routes);
 db.asPromise()
     .then(() => {
         console.log('Connected successfully to MongoDB');
-        // Use client.db() constructor to add new db instance
-
-
-        // start up express server
         app.listen(PORT, () => {
             console.log(`Example app listening at http://localhost:${PORT}`);
         });
