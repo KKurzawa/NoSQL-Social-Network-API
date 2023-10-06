@@ -9,6 +9,8 @@ const {
     deleteReaction,
 } = require('../../controllers/thoughtsController.js');
 
+// router.route('/:studentId/assignments').post(createThought);
+
 router
     .route('/')
     .get(getThoughts)
