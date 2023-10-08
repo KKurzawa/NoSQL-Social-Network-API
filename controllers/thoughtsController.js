@@ -24,6 +24,30 @@ module.exports = {
         }
     },
 
+    // async createThought(req, res) {
+    //     try {
+    //         const thought = await Thought.create(req.body);
+    //         const user = await User.findOneAndUpdate(
+    //             console.log('test'),
+    //             { _id: req.params.userId },
+    //             { $addToSet: { thoughts: req.body } },
+    //             { runValidators: true, new: true }
+    //         );
+
+    //         if (!user) {
+    //             return res.status(404).json({
+    //                 message: 'Thought created, but found no user with that ID',
+    //             })
+    //         }
+
+    //         res.json('Created the thought!');
+    //     } catch (err) {
+    //         console.log(err);
+    //         res.status(500).json(err);
+    //     }
+    // },
+
+
     async createThought(req, res) {
         try {
             const user = await User.findById(req.body.userId);

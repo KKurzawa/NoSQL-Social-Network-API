@@ -16,6 +16,10 @@ router
     .get(getThoughts)
     .post(createThought);
 
+// router
+//     .route('/:userId')
+//     .post(createThought);
+
 router
     .route('/:thoughtId')
     .get(getSingleThought)
