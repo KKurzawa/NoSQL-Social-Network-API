@@ -15,7 +15,6 @@ router
     .get(getUsers)
     .post(createUser);
 
-
 router
     .route('/:userId')
     .get(getSingleUser)
