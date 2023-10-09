@@ -55,7 +55,7 @@ module.exports = {
         try {
             const user = await User.findById(req.body.userId);
             console.log(user)
-            const thought = await Thought.create({ thoughtText: req.body.thoughtText, username: user.userName });
+            const thought = await Thought.create({ thoughtText: req.body.thoughtText, username: user.username });
 
             user = await User.findByIdAndUpdate(
                 { _id: req.body.userId },
@@ -108,32 +108,46 @@ module.exports = {
     },
 
 
+    // async createReaction(req, res) {
+    //     try {
+    //         const reaction = await Thought.findOneAndUpdate(
+    //             { _id: req.params.thoughtId },
+    //             { $addToSet: { reactions: req.body } },
+    //             { runValidators: true, new: true }
+
+    //         );
+    //         res.json(reaction);
+    //     } catch (err) {
+    //         return res.status(500).json(err);
+    //     }
+    // },
+
     async createReaction(req, res) {
         try {
-            const reaction = await Thought.findOneAndUpdate(
+            const thought = await Thought.findById(req.params.thoughtId);
+            console.log(thought)
+            const reaction = await Reaction.create(req.body);
+            console.log(reaction)
+            thought = await Thought.findByIdAndUpdate(
                 { _id: req.params.thoughtId },
-                { $addToSet: { reactions: req.body } },
+                { $addToSet: { reactions: reaction } },
                 { runValidators: true, new: true }
 
             );
             res.json(reaction);
-        } catch (err) {
+        }
+        catch (err) {
             return res.status(500).json(err);
         }
     },
 
     async deleteReaction(req, res) {
         try {
-            const reaction = await Thought.findOneAndUpdate(
-                { _id: req.params.thoughtId },
-                { $pull: { reactions: { $in: [req.body._id] } } },
-                { runValidators: true, new: true }
-
-            );
+            const reaction = await Reaction.findOneAndDelete({ _id: req.params.reactionId });
             if (!reaction) {
                 return res.status(404).json({ message: 'No reaction with this id.' });
             }
-            res.status(200).json(reaction);
+            res.status(200).json('Reaction deleted');
         } catch (err) {
             res.status(500).json(err);
         }

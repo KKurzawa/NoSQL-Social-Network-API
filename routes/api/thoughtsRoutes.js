@@ -30,4 +30,9 @@ router
     .post(createReaction)
     .delete(deleteReaction);
 
+
+// router
+//     .route('/:reactionId')
+//     .delete(deleteReaction);
+
 module.exports = router;
