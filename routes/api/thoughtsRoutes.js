@@ -1,4 +1,5 @@
 const router = require('express').Router();
+
 const {
     getThoughts,
     getSingleThought,
@@ -8,8 +9,6 @@ const {
     createReaction,
     deleteReaction,
 } = require('../../controllers/thoughtsController.js');
-
-// router.route('/:studentId/assignments').post(createThought);
 
 router
     .route('/')

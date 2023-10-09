@@ -5,6 +5,9 @@ module.exports = {
     async getThoughts(req, res) {
         try {
             const thoughts = await Thought.find();
+            if (!thoughts) {
+                return res.status(404).json({ message: 'No thoughts yet.' });
+            }
             res.json(thoughts);
         } catch (err) {
             res.status(500).json(err);
@@ -16,7 +19,7 @@ module.exports = {
             const thought = await Thought.findOne({ _id: req.params.thoughtId })
                 .select('-__v');
             if (!thought) {
-                return res.status(404).json({ message: 'No thought with that ID' });
+                return res.status(404).json({ message: 'No thought with that ID.' });
             }
             res.json(thought);
         } catch (err) {
@@ -76,16 +79,6 @@ module.exports = {
     //     }
     // },
 
-    async deleteThought(req, res) {
-        try {
-            const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
-            res.status(200).json(thought);
-            res.json({ message: 'Thought deleted!' });
-        } catch (err) {
-            res.status(500).json(err);
-        }
-    },
-
     async updateThought(req, res) {
         try {
             const thought = await Thought.findOneAndUpdate(
@@ -93,16 +86,27 @@ module.exports = {
                 { $set: req.body },
                 { runValidators: true, new: true }
             );
-
             if (!thought) {
-                return res.status(404).json({ message: 'No thought with this id!' });
+                return res.status(404).json({ message: 'No thought with this id.' });
             }
-
             res.json(thought);
         } catch (err) {
             res.status(500).json(err);
         }
     },
+
+    async deleteThought(req, res) {
+        try {
+            const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
+            if (!thought) {
+                return res.status(404).json({ message: 'No thought with this id.' });
+            };
+            res.status(200).json({ message: 'Thought deleted!' });
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+
 
     async createReaction(req, res) {
         try {
@@ -126,6 +130,9 @@ module.exports = {
                 { runValidators: true, new: true }
 
             );
+            if (!reaction) {
+                return res.status(404).json({ message: 'No reaction with this id.' });
+            }
             res.status(200).json(reaction);
         } catch (err) {
             res.status(500).json(err);
