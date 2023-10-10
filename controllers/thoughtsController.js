@@ -55,7 +55,7 @@ module.exports = {
         try {
             const user = await User.findById(req.body.userId);
             console.log(user)
-            const thought = await Thought.create({ thoughtText: req.body.thoughtText, username: user.username });
+            const thought = await Thought.create(req.body);
 
             user = await User.findByIdAndUpdate(
                 { _id: req.body.userId },
@@ -141,18 +141,6 @@ module.exports = {
         }
     },
 
-    // async deleteReaction(req, res) {
-    //     try {
-    //         const reaction = await Reaction.findOneAndDelete({ _id: req.params.reactionId });
-    //         if (!reaction) {
-    //             return res.status(404).json({ message: 'No reaction with this id.' });
-    //         }
-    //         res.status(200).json('Reaction deleted');
-    //     } catch (err) {
-    //         res.status(500).json(err);
-    //     }
-    // },
-
     async deleteReaction(req, res) {
         try {
             const thought = await Thought.findOneAndUpdate(
@@ -172,32 +160,4 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-
-    // async deleteReaction(req, res) {
-    //     try {
-    //         const reaction = await Reaction.findOneAndRemove({ _id: req.params.reactionId });
-
-    //         if (!reaction) {
-    //             return res.status(404).json({ message: 'No reaction with that ID.' })
-    //         }
-
-    //         const thought = await Thought.findOneAndUpdate(
-    //             { reactions: req.params.reactionId },
-    //             { $pull: { reactions: req.params.reactionId } },
-    //             { new: true }
-    //         );
-
-    //         if (!thought) {
-    //             return res.status(404).json({
-    //                 message: 'Reaction deleted, but no thought found.',
-    //             });
-    //         }
-
-    //         res.json({ message: 'Reaction deleted.' });
-    //     } catch (err) {
-    //         console.log(err);
-    //         res.status(500).json(err);
-    //     }
-    // },
-
 };
