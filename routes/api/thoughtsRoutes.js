@@ -27,12 +27,14 @@ router
 
 router
     .route('/:thoughtId/reactions')
-    .post(createReaction)
-    .delete(deleteReaction);
-
+    .post(createReaction);
+// .delete(deleteReaction);
 
 // router
-//     .route('/:reactionId')
-//     .delete(deleteReaction);
+//     .route('/:reactionId').delete(deleteReaction);
+
+router
+    .route('/:thoughtId/reactions/:reactionId')
+    .delete(deleteReaction);
 
 module.exports = router;

@@ -141,15 +141,63 @@ module.exports = {
         }
     },
 
+    // async deleteReaction(req, res) {
+    //     try {
+    //         const reaction = await Reaction.findOneAndDelete({ _id: req.params.reactionId });
+    //         if (!reaction) {
+    //             return res.status(404).json({ message: 'No reaction with this id.' });
+    //         }
+    //         res.status(200).json('Reaction deleted');
+    //     } catch (err) {
+    //         res.status(500).json(err);
+    //     }
+    // },
+
     async deleteReaction(req, res) {
         try {
-            const reaction = await Reaction.findOneAndDelete({ _id: req.params.reactionId });
-            if (!reaction) {
-                return res.status(404).json({ message: 'No reaction with this id.' });
+            const thought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $pull: { reactions: { reactionId: req.params._id } } },
+                { runValidators: true, new: true }
+            );
+            if (!thought) {
+                return res.status(404).json({ message: 'No thought with that ID.' });
             }
-            res.status(200).json('Reaction deleted');
+            const reaction = await Reaction.findOneAndRemove(req.params._id);
+            if (!reaction) {
+                return res.status(404).json({ message: 'No reaction with that ID.' });
+            }
+            res.json({ message: 'Reaction deleted.' });
         } catch (err) {
             res.status(500).json(err);
         }
     },
+
+    // async deleteReaction(req, res) {
+    //     try {
+    //         const reaction = await Reaction.findOneAndRemove({ _id: req.params.reactionId });
+
+    //         if (!reaction) {
+    //             return res.status(404).json({ message: 'No reaction with that ID.' })
+    //         }
+
+    //         const thought = await Thought.findOneAndUpdate(
+    //             { reactions: req.params.reactionId },
+    //             { $pull: { reactions: req.params.reactionId } },
+    //             { new: true }
+    //         );
+
+    //         if (!thought) {
+    //             return res.status(404).json({
+    //                 message: 'Reaction deleted, but no thought found.',
+    //             });
+    //         }
+
+    //         res.json({ message: 'Reaction deleted.' });
+    //     } catch (err) {
+    //         console.log(err);
+    //         res.status(500).json(err);
+    //     }
+    // },
+
 };
