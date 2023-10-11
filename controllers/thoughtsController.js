@@ -28,18 +28,18 @@ module.exports = {
     },
 
     async createThought(req, res) {
+        console.log("Incoming Request: ", req.body);
         try {
-            const user = await User.findById(req.body.userId);
             const thought = await Thought.create(req.body);
-            user = await User.findByIdAndUpdate(
+            const user = await User.findByIdAndUpdate(
                 { _id: req.body.userId },
                 { $addToSet: { thoughts: thought } },
                 { runValidators: true, new: true }
-
             );
             res.json(thought);
         }
         catch (err) {
+            console.log("Error: ", err);
             return res.status(500).json(err);
         }
     },
@@ -74,11 +74,11 @@ module.exports = {
 
     async createReaction(req, res) {
         try {
-            const thought = await Thought.findById(req.params.thoughtId);
-            // console.log(thought)
+            // const thought = await Thought.findById(req.params.thoughtId);
+            // // console.log(thought)
             const reaction = await Reaction.create(req.body);
             // console.log(reaction)
-            thought = await Thought.findByIdAndUpdate(
+            const thought = await Thought.findByIdAndUpdate(
                 { _id: req.params.thoughtId },
                 { $addToSet: { reactions: reaction } },
                 { runValidators: true, new: true }
